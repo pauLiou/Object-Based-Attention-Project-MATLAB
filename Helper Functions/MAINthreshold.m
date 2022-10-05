@@ -1,5 +1,10 @@
 % PSS value from experiment 1
 
+% function to classify the threshold for the MAIN experiment utilising the PSS threshold score.
+% We will utilise the trial_output function (see Help Function repo) to generate plottable outputs
+% as psychometric functions to see if participants have maintained the correct threshold.
+% This will then be stored in the "threshold" variable which is later passed to the output struct.
+
 function MAINthreshold = MAINthreshold(data,thresholdPSS)
 addpath('D:\new_experiment\helperFunctions');
 addpath('C:\toolbox\psignifit-master');
