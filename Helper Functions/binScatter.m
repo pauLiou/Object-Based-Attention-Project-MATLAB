@@ -1,5 +1,8 @@
 function [bin,edges,figure] = binScatter(t,reference)
 
+% Here we are creating scatter plots of data that are we are binning using a rounded square-root of the sum of trials.
+% These results are plotted into the figure variable, and saved in structs under "bin".
+
 
 x = t.Properties.VariableNames;
 q = t.(reference);
