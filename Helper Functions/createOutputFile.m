@@ -1,3 +1,6 @@
+% Simple script to create an excel output file from the output struct. 
+% Easily customisable depending on the headers needed. Works for ints/strings etc
+
 function createOutputFile( exp, output )
 %CREATEOUTPUTFILE Create an excel file with the output data
 
