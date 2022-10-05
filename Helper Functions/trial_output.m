@@ -2,6 +2,16 @@
 % Function for the output of trial data      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% This function does some ugly data transforming. It works but isn't replicatable for other scenarios.
+% Furthermore the variable naming leaves a lot to be desired. 
+% It outputs the following information:
+
+% SOAs - the array of Stimulus Onset Asynchronies (in milliseconds)
+% result - the array of responess from the participant
+% SOA_unique -  a short array listing the unique SOAs for each block of trials
+% info - a struct with the responses * the SOAs, also transformed into means and percentages
+% bin - information about how the data can be binned 
+
 function [SOAs,result,SOA_unique,info,bin] = trial_output(data,control,uncued,threshold)
 
 % get the SOAs and accuracy of the trials in question (normal data,
