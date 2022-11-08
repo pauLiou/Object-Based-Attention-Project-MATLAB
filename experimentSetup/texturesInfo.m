@@ -1,10 +1,10 @@
 % Textures and Probes
 
-img2 = readImage('textures/temp/2_white',0);
-img3 = readImage('textures/temp/3_white',0);
-img5 = readImage('textures/temp/5_white',0);
+img2 = readImage('textures/temp/2',0);
+img3 = readImage('textures/temp/3',0);
+img5 = readImage('textures/temp/5',0);
 img8 = readImage('textures/temp/8_grey',0);
-imgE = readImage('textures/temp/E_white',0);
+imgE = readImage('textures/temp/E',0);
 imgCue = readImage('textures/movement_cue2',0);
 instructions1 = imread([pwd '\textures\instructions\Slide1.jpg']);
 instructions2 = imread([pwd '\textures\instructions\Slide2.jpg']);
@@ -53,9 +53,9 @@ red.distractor.t52 = readImage('textures\textures_2022\new\rectanglered52',0);
 % Image size is determined in relation to screen-participant distance to
 % assure visual angle
 cmtopix = (10 * screenYpixels) / screenHeight;
-imgHeigth = 2 * eyeDistance * tan(deg2rad(1.2 / 2)) * cmtopix;
-imgWidth = 2 * eyeDistance * tan(deg2rad(1.2 / 2)) * cmtopix;
-circleRadius = 2 * eyeDistance * tan(deg2rad(7.2 / 2)) * cmtopix;
+imgHeight = 2.25 * eyeDistance * tan(deg2rad(1.2 / 2)) * cmtopix;
+imgWidth = 1.5 * eyeDistance * tan(deg2rad(1.2 / 2)) * cmtopix;
+circleRadius = 1.9 * eyeDistance * tan(deg2rad(7.2 / 2)) * cmtopix;
 
 % Maximum permissible radius in ScreenCoordinates (from visual angle)
 threshold_radius = 2 * eyeDistance * tan(deg2rad(threshold_radius / 2)) * cmtopix;
@@ -74,48 +74,50 @@ instructions2 = Screen('MakeTexture',w,instructions2);
 instructions3 = Screen('MakeTexture',w,instructions3);
 instructions4 = Screen('MakeTexture',w,instructions4);
 instructions5 = Screen('MakeTexture',w,instructions5);
+rect1 = Screen('MakeTexture',w,red.Blank,1,1);
 
-defaultStimulus = Screen('MakeTexture',w,red.Blank,1,1);
-
-distractorOptions = ([distractorStimulus,distractorStimulus_2]);
-targetOptions = [targetStimulus,targetStimulus_2];
 
 % Create the stimuli locations
-alltargetLoc = targetsOnHalfCircle(circleRadius, circleXCenter, yCenter, imgHeigth, imgWidth, 4, [1,2,3,4]);
+alltargetLoc = targetsOnHalfCircle(circleRadius, circleXCenter, yCenter, imgHeight, imgWidth, 4, [1,2,3,4]);
 for i = 1:length(alltargetLoc)
     loc = alltargetLoc{i};
     [locxCenter,locyCenter] = RectCenter(loc);
     allTargetX{i} = [locxCenter,locyCenter];
 end
 
-% The box coordinates
+% The rectangle coordinates
 
-baseRectHorizontal = [0 0 500 100];
-baseRectVertical = [0 0 100 500];
 for i = 1:length(alltargetLoc)
     [boxX boxY] = RectCenter(alltargetLoc{i});
     boxCoords{i} = [boxX,boxY];
     clear boxX boxY
 end
+% rectangle position
+baseRectHorizontal = [0 0 500 100];
 allRects = nan(4,4);
-allRectsVert = nan(4,4);
 allRects(:,1) = CenterRectOnPointd(baseRectHorizontal,xCenter,boxCoords{2}(2));
 allRects(:,2) = CenterRectOnPointd(baseRectHorizontal,xCenter,boxCoords{1}(2));
-allRectsVert(:,1) = CenterRectOnPointd(baseRectVertical,boxCoords{1}(1),yCenter);
-allRectsVert(:,2) = CenterRectOnPointd(baseRectVertical,boxCoords{3}(1),yCenter);
+
+
+distractorOptions = ([distractorStimulus,distractorStimulus_2]);
+targetOptions = [targetStimulus,targetStimulus_2];
+
+
+
+
+
 allColors = ([63 63 63]/255);
 topColors = ([0 0 255]);
 bottomColors = ([255 0 0]);
 
-rect = [0,0,735,135]
+
 
 % Make the destination rectangles for our image. We will draw the image
 % multiple times over getting smaller on each iteration. So we need the big
 % dstRects first followed by the progressively smaller ones
 
 
-x = CenterRectOnPointd(rect, screenXpixels / 2, screenYpixels *0.75);
-xt = CenterRectOnPointd(rect, screenXpixels / 2, screenYpixels *0.25);
+
 
 % Define corresponding cue angles pointing to every possible movement target
 

@@ -1,4 +1,4 @@
-function fixationTime = fixationCheck(pause_key,block,trialnr,eyetracker,iView,w,textColor,allCoords,lineWidthPix,circleXCenter,xCenter,yCenter,defaultStimulus,alltargetLoc,threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,practice,saccade,QUEST)
+function fixationTime = fixationCheck(pause_key,block,trialnr,eyetracker,iView,w,textColor,allCoords,lineWidthPix,circleXCenter,xCenter,yCenter,defaultStimulus,alltargetLoc,threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,practice,saccade,QUEST,rect1)
 
 % While loop below determines that:
 % A: Participant is fixated for at least the length of 1 second.
@@ -39,13 +39,17 @@ while(~fixatedEyes || ~dur)
 
     if(saccade)% && ~QUEST)
         if exp.practice == 'y' && block == 2
-            Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-            Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+            %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
+            %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+            Screen('DrawTextures', w, rect1, [], rectangle(:,1));
+            Screen('DrawTextures', w, rect1, [], rectangle(:,2));
         elseif exp.practice == 'y' && block == 1
             % don't include the oval
         else
-            Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-            Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+            %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
+            %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+            Screen('DrawTextures', w, rect1, [], rectangle(:,1));
+            Screen('DrawTextures', w, rect1, [], rectangle(:,2));
         end
     end
     % This draws the 4 placeholder locations
@@ -54,8 +58,10 @@ while(~fixatedEyes || ~dur)
 %     end
     % This draws the four template locations  
     if practice == 'n'% && ~QUEST
-        Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-        Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+        %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
+        %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+        Screen('DrawTextures', w, rect1, [], rectangle(:,1));
+        Screen('DrawTextures', w, rect1, [], rectangle(:,2));
     end
 
     

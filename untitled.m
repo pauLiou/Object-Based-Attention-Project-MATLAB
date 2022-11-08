@@ -49,15 +49,15 @@ theImage = imread('textures\textures_2022\new\rectangleRedBlank.png');
 % Make the image into a texture
 imageTexture = Screen('MakeTexture', window, theImage);
 
-rect = [0,0,735,135]
-
 % Make the destination rectangles for our image. We will draw the image
 % multiple times over getting smaller on each iteration. So we need the big
 % dstRects first followed by the progressively smaller ones
 
+x = [710,306,1210,406]
+xt = [710,674, 1210, 774]
 
-x = CenterRectOnPointd(rect, screenXpixels / 2, screenYpixels *0.75);
-xt = CenterRectOnPointd(rect, screenXpixels / 2, screenYpixels *0.25);
+%x = CenterRectOnPointd(rect, screenXpixels / 2, screenYpixels *0.75);
+%xt = CenterRectOnPointd(rect, screenXpixels / 2, screenYpixels *0.25);
 
 
 % Draw the image to the screen, unless otherwise specified PTB will draw

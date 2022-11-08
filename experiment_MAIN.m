@@ -5,11 +5,11 @@
 clear;
 FlushEvents();
 %DisableKeysForKbCheck();
-cd('D:\Project_2\experiment');
-addpath('C:/toolbox/');
-addpath('C:/toolbox/Psychtoolbox/');
-addpath(genpath('D:/Project_2/mQuestPlus-master/'));
-addpath('D:\Project_2\experiment\participantThreshold');
+cd('H:\Project 2\2-DataAcquisition\experiment');
+addpath('C:\toolbox\');
+addpath('C:\toolbox\Psychtoolbox\');
+addpath(genpath('H:\Project 2\2-DataAcquisition\ExperimentalScripts\mQUESTPlus-master'));
+addpath('H:\Project 2\2-DataAcquisition\experiment\participantThreshold');
 sca;
 close all;
 clearvars;
@@ -70,7 +70,7 @@ end
 calibrationInfo;
 workspace; 
 
-cd('D:\Project_2\experiment');
+cd('H:\Project 2\2-DataAcquisition\experiment');
 
 % Runs the helper file that gives the screen information directly
 screenInfo;
@@ -79,27 +79,29 @@ screenInfo;
 audioInfo;
 
 % QUEST PDF INPUT
-if(QUEST)
-    questData.ISI = qpInitialize('stimParamsDomainList',{10:2:160}, ...
-    'psiParamsDomainList',{10:2:160,3.5, 0.5, 0.02},'qpPF',@qpPFWeibull,verbose=true);
-    targ = 100;
-    questData.cueTime = qpInitialize('stimParamsDomainList',{200:200:1600}, ...
-    'psiParamsDomainList',{200:200:1600,3.5,0.5,0.02},'qpPF',@qpPFWeibull,verbose=true);
-else
-    if exp.practice == 'y'
-        targ = 100;
-        cueTime = 500;
-    else
-        targ = load(['participant_' num2str(exp.VPN) '.mat']);
-        targ = targ.exp.questthreshold;
-        exp.date = datestr(now);
-        cueTime = load(['participant_' num2str(exp.VPN) '.mat']);
-        cueTime = cueTime.exp.questthreshold;
-    end
-
-end
+% if(QUEST)
+%     questData.ISI = qpInitialize('stimParamsDomainList',{10:2:160}, ...
+%     'psiParamsDomainList',{10:2:160,3.5, 0.5, 0.02},'qpPF',@qpPFWeibull,verbose=true);
+%     targ = 100;
+%     questData.cueTime = qpInitialize('stimParamsDomainList',{200:200:1600}, ...
+%     'psiParamsDomainList',{200:200:1600,3.5,0.5,0.02},'qpPF',@qpPFWeibull,verbose=true);
+% else
+%     if exp.practice == 'y'
+%         targ = 100;
+%         cueTime = 500;
+%     else
+%         targ = load(['participant_' num2str(exp.VPN) '.mat']);
+%         targ = targ.exp.questthreshold;
+%         exp.date = datestr(now);
+%         cueTime = load(['participant_' num2str(exp.VPN) '.mat']);
+%         cueTime = cueTime.exp.questthreshold;
+%     end
+% 
+% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experiment
+
+cueTime = 500;
 
 for block = output.currentblock:numberofblocks
     DisableKeysForKbCheck(setdiff(1:256,[37,39,32,27,80]));
@@ -220,7 +222,7 @@ for block = output.currentblock:numberofblocks
         startTime = GetSecs;
         fixationTime = fixationCheck(pause_key,block,trialnr,eyetracker,iView,w,textColor,allCoords,lineWidthPix,...
                                     circleXCenter,xCenter,yCenter,defaultStimulus,alltargetLoc,...
-                                    threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,exp.practice,saccade,QUEST);
+                                    threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,exp.practice,saccade,QUEST,rect1);
                                 
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
@@ -228,8 +230,10 @@ for block = output.currentblock:numberofblocks
         Screen('DrawTexture',w,arrowCue,[],[circleXCenter-15, yCenter-15,circleXCenter+15,yCenter+15],cueAngle(movementTarget,1),2,2);
         % This draws the rectangles
         if(exp.practice == 'n' )%&& ~QUEST)
-            Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-            Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+            %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
+            %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+            Screen('DrawTextures', w, rect1, [], rectangle(:,1));
+            Screen('DrawTextures', w, rect1, [], rectangle(:,2));
         end
         % This draws the four template locations
         %             for a = 1:4
@@ -288,8 +292,10 @@ for block = output.currentblock:numberofblocks
             Screen('DrawTexture',w,arrowCue,[],[circleXCenter-15, yCenter-15,circleXCenter+15,yCenter+15],cueAngle(movementTarget,1),2,2);
             % This draws the rectangles
             if(exp.practice == 'n')% && ~QUEST)
-                Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-                Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+                %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
+                %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+                Screen('DrawTextures', w, rect1, [], rectangle(:,1));
+                Screen('DrawTextures', w, rect1, [], rectangle(:,2));
             end
 
             % This draws the 3 template locations
@@ -313,8 +319,10 @@ for block = output.currentblock:numberofblocks
             Screen('DrawTexture',w,arrowCue,[],[circleXCenter-15, yCenter-15,circleXCenter+15,yCenter+15],cueAngle(movementTarget,1),2,2);
             % This draws the rectangles
             if(exp.practice == 'n')% && ~QUEST)
-                Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-                Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+                %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
+                %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
+                Screen('DrawTextures', w, rect1, [], rectangle(:,1));
+                Screen('DrawTextures', w, rect1, [], rectangle(:,2));
             end
             % This draws the four template locations
 %             for a = 1:4
@@ -325,8 +333,8 @@ for block = output.currentblock:numberofblocks
                 Screen('FrameOval', w ,allColors,baseRect,3); % draw the oval
             end
 
-            myWait(targ/1000-0.0013);
-
+            %myWait(targ/1000-0.0013);
+            KbWait;
             Screen('Flip',w);
             targetTime = GetSecs;
             %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -4,21 +4,23 @@
 warning('off','all');
 Screen('Preference','SkipSyncTests', 2);
 Screen('Preference', 'SuppressAllWarnings', 1);
-scrID = max(Screen('Screens'));
+scrID = 3;%max(Screen('Screens'));
 KbName('UnifyKeyNames');
+Screen('Preference','TextRenderer',0)
 
 % Define some colour info
 luminescence = 60;
 bkgdColor = 0;
 white = WhiteIndex(scrID);
 black = BlackIndex(scrID);
-grey = white / 2;
-textColor = white;
 
-[w, windowRect] = PsychImaging('OpenWindow', scrID, bkgdColor);
+textColor = white;
+grey = [60,60,60]/255;
+
+[w, windowRect] = PsychImaging('OpenWindow', scrID, grey);
 PsychImaging('PrepareConfiguration');
 PsychImaging('AddTask','General','UseFineGrainedTiming');
-[w, windowRect] = PsychImaging('OpenWindow', scrID, bkgdColor);
+[w, windowRect] = PsychImaging('OpenWindow', scrID, grey);
 
 HideCursor(w);
 
@@ -46,7 +48,7 @@ allCoords = [xCoords; yCoords];
 lineWidthPix = 3;
 
 % Set distance of the eyes to the screen in cm
-eyeDistance = 58;
+eyeDistance = 57;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
