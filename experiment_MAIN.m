@@ -46,7 +46,6 @@ keyboardInfo;
 % participants input
 participantInfo;
 
-
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 % Eyetracker setup
 
@@ -79,29 +78,28 @@ screenInfo;
 audioInfo;
 
 % QUEST PDF INPUT
-% if(QUEST)
-%     questData.ISI = qpInitialize('stimParamsDomainList',{10:2:160}, ...
-%     'psiParamsDomainList',{10:2:160,3.5, 0.5, 0.02},'qpPF',@qpPFWeibull,verbose=true);
-%     targ = 100;
-%     questData.cueTime = qpInitialize('stimParamsDomainList',{200:200:1600}, ...
-%     'psiParamsDomainList',{200:200:1600,3.5,0.5,0.02},'qpPF',@qpPFWeibull,verbose=true);
-% else
-%     if exp.practice == 'y'
-%         targ = 100;
-%         cueTime = 500;
-%     else
-%         targ = load(['participant_' num2str(exp.VPN) '.mat']);
-%         targ = targ.exp.questthreshold;
-%         exp.date = datestr(now);
-%         cueTime = load(['participant_' num2str(exp.VPN) '.mat']);
-%         cueTime = cueTime.exp.questthreshold;
-%     end
-% 
-% end
+if(QUEST)
+    questData.ISI = qpInitialize('stimParamsDomainList',{10:2:160}, ...
+    'psiParamsDomainList',{10:2:160,3.5, 0.5, 0.02},'qpPF',@qpPFWeibull);
+    targ = 100;
+    questData.cueTime = qpInitialize('stimParamsDomainList',{50:50:1600}, ...
+    'psiParamsDomainList',{50:50:1600,3.5,0.5,0.02},'qpPF',@qpPFWeibull);
+else
+    if exp.practice == 'y'
+        targ = 100;
+        cueTime = 500;
+    else
+        targ = load(['participant_' num2str(exp.VPN) '.mat']);
+        targ = targ.exp.questthreshold;
+        exp.date = datestr(now);
+        cueTime = load(['participant_' num2str(exp.VPN) '.mat']);
+        cueTime = cueTime.exp.questthreshold;
+    end
+
+end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experiment
-
-cueTime = 500;
+Screen('BlendFunction', w, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA'); % antialiasing
 
 for block = output.currentblock:numberofblocks
     DisableKeysForKbCheck(setdiff(1:256,[37,39,32,27,80]));
@@ -140,7 +138,7 @@ for block = output.currentblock:numberofblocks
         end
     end
 
-    Screen('BlendFunction', w, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
+     
     
     Screen('TextSize',w, 24);
     blocktext = ['Block: [', num2str(block), '] Press Any Key to Begin...'];
@@ -190,16 +188,18 @@ for block = output.currentblock:numberofblocks
 
 
         % Trial setup
-        rec1 = [2,3];
-        rec2 = [1,4];
-        rectangle = allRects;
-        if trialRec(trialnr) == 0
-            topColors = [0 0 255];
-            bottomColors = [255 0 0];
+        toprect = rect1;
+        bottomrect = rect2;
+        if randi([0,1]) == 1
+            top = 1;
+            rect1 = bottomrect;
+            rect2 = toprect;
         else
-            topColors = [255 0 0];
-            bottomColors = [0 0 255];
+            top = 0;
+            rect1 = toprect;
+            rect2 = bottomrect;
         end
+            
 
         if exp.trialMatrix(trialnr,3) ~= 1
             saccade = true;
@@ -214,15 +214,15 @@ for block = output.currentblock:numberofblocks
         elseif exp.practice == 'y' && block == 2
             saccade = true;
         end
-        targetLoc = inObject(exp.trialMatrix,movementTarget,trialnr,rec1,rec2,trialRec(trialnr)); % adjusts whether appears in box or not     
+        targetLoc = inObject(exp.trialMatrix,movementTarget,trialnr); % adjusts whether appears in box or not     
         
         % fixationCheck while loop below determines that:
         % A: Participant is fixated for at least the length of 1 second.
         % B: Eyes are actually on the fixation cross for this time
         startTime = GetSecs;
         fixationTime = fixationCheck(pause_key,block,trialnr,eyetracker,iView,w,textColor,allCoords,lineWidthPix,...
-                                    circleXCenter,xCenter,yCenter,defaultStimulus,alltargetLoc,...
-                                    threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,exp.practice,saccade,QUEST,rect1);
+                                    circleXCenter,xCenter,yCenter,alltargetLoc,...
+                                    threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,exp.practice,saccade,QUEST,rect1,rect2);
                                 
         %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
@@ -233,7 +233,7 @@ for block = output.currentblock:numberofblocks
             %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
             %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
             Screen('DrawTextures', w, rect1, [], rectangle(:,1));
-            Screen('DrawTextures', w, rect1, [], rectangle(:,2));
+            Screen('DrawTextures', w, rect2, [], rectangle(:,2));
         end
         % This draws the four template locations
         %             for a = 1:4
@@ -292,10 +292,8 @@ for block = output.currentblock:numberofblocks
             Screen('DrawTexture',w,arrowCue,[],[circleXCenter-15, yCenter-15,circleXCenter+15,yCenter+15],cueAngle(movementTarget,1),2,2);
             % This draws the rectangles
             if(exp.practice == 'n')% && ~QUEST)
-                %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-                %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
                 Screen('DrawTextures', w, rect1, [], rectangle(:,1));
-                Screen('DrawTextures', w, rect1, [], rectangle(:,2));
+                Screen('DrawTextures', w, rect2, [], rectangle(:,2));
             end
 
             % This draws the 3 template locations
@@ -319,10 +317,8 @@ for block = output.currentblock:numberofblocks
             Screen('DrawTexture',w,arrowCue,[],[circleXCenter-15, yCenter-15,circleXCenter+15,yCenter+15],cueAngle(movementTarget,1),2,2);
             % This draws the rectangles
             if(exp.practice == 'n')% && ~QUEST)
-                %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
-                %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
                 Screen('DrawTextures', w, rect1, [], rectangle(:,1));
-                Screen('DrawTextures', w, rect1, [], rectangle(:,2));
+                Screen('DrawTextures', w, rect2, [], rectangle(:,2));
             end
             % This draws the four template locations
 %             for a = 1:4
@@ -333,8 +329,8 @@ for block = output.currentblock:numberofblocks
                 Screen('FrameOval', w ,allColors,baseRect,3); % draw the oval
             end
 
-            %myWait(targ/1000-0.0013);
-            KbWait;
+            myWait(targ/1000-0.0013);
+            
             Screen('Flip',w);
             targetTime = GetSecs;
             %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -348,18 +344,15 @@ for block = output.currentblock:numberofblocks
             PsychPortAudio('Stop', pahandle); % reset audio
         end
         
-
         response = find(find(keyCode == 1) == [leftKey,rightKey]);
-        
         targetStyle = find(target == [targetStimulus,targetStimulus_2]);
-
 
         output.responses((block-1)*numberoftrials+trialnr,1) = block; % Current block
         output.responses((block-1)*numberoftrials+trialnr,2) = trialnr; % Current trial
         output.responses((block-1)*numberoftrials+trialnr,3) = response_time-targetTime; % Reaction time of response
         output.responses((block-1)*numberoftrials+trialnr,4) = response; % left = 1, right  = 2;
         output.responses((block-1)*numberoftrials+trialnr,5) = saccade;
-        output.responses((block-1)*numberoftrials+trialnr,6) = trialRec(trialnr); % vertical/horizontal rectangles (1 = horizontal)
+        output.responses((block-1)*numberoftrials+trialnr,6) = top; % vertical/horizontal rectangles (1 = horizontal)
         output.responses((block-1)*numberoftrials+trialnr,7) = targ;%exp.trialMatrix(trialnr,2); % SOA (150ms,200ms)
         output.responses((block-1)*numberoftrials+trialnr,8) = movementTarget; % Arrow cue location
         output.responses((block-1)*numberoftrials+trialnr,9) = exp.trialMatrix(trialnr,2); % 1 = Cue at target, 2 = cue at same box as target, etc
@@ -377,17 +370,13 @@ for block = output.currentblock:numberofblocks
         output.responses((block-1)*numberoftrials+trialnr,21) = (targetTime-beepTime) - targ/1000; % SOA diff
         output.responses((block-1)*numberoftrials+trialnr,22) = (beepTime-arrowTime); % time of the audio device
         output.responses((block-1)*numberoftrials+trialnr,23) = saccadeTime; % speed of the saccade on practice trials
-        
-        % Screen mask
-        
-       
+             
         % This draws the fixation cross
         Screen('DrawLines', w, allCoords, lineWidthPix, textColor, [circleXCenter yCenter], 2);
         Screen('Flip',w);
         myWait(1);
         
         % QUEST PDF UPDATE
-        
         if(QUEST)
             if response == targetStyle
                 outcome = 2;

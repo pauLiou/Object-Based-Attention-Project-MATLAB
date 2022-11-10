@@ -10,15 +10,6 @@ positionChoices = [1 2 3 4];
 
 fixated = 0; % will change in practice trial if fixation is not met
 
-% create a variable with number of trials that randomly assigns a value
-% with 50% probability
-
-numberOfOnes = round(numberoftrials/2);% Total length must be even to have even # of 0s and 1s.
-indexes = randperm(numberoftrials);
-trialRec = zeros(1, numberoftrials);
-trialRec(indexes(1:numberOfOnes)) = 1;
-
-clear n numberOfOnes indexes
 
 output.currentblock = 1;
 output.currenttrial = 1;

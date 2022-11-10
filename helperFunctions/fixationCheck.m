@@ -1,4 +1,4 @@
-function fixationTime = fixationCheck(pause_key,block,trialnr,eyetracker,iView,w,textColor,allCoords,lineWidthPix,circleXCenter,xCenter,yCenter,defaultStimulus,alltargetLoc,threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,practice,saccade,QUEST,rect1)
+function fixationTime = fixationCheck(pause_key,block,trialnr,eyetracker,iView,w,textColor,allCoords,lineWidthPix,circleXCenter,xCenter,yCenter,alltargetLoc,threshold_radius,pSampleData,exp,topColors,bottomColors,rectangle,startTime,ifi,practice,saccade,QUEST,rect1,rect2)
 
 % While loop below determines that:
 % A: Participant is fixated for at least the length of 1 second.
@@ -42,14 +42,14 @@ while(~fixatedEyes || ~dur)
             %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
             %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
             Screen('DrawTextures', w, rect1, [], rectangle(:,1));
-            Screen('DrawTextures', w, rect1, [], rectangle(:,2));
+            Screen('DrawTextures', w, rect2, [], rectangle(:,2));
         elseif exp.practice == 'y' && block == 1
             % don't include the oval
         else
             %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
             %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
             Screen('DrawTextures', w, rect1, [], rectangle(:,1));
-            Screen('DrawTextures', w, rect1, [], rectangle(:,2));
+            Screen('DrawTextures', w, rect2, [], rectangle(:,2));
         end
     end
     % This draws the 4 placeholder locations
@@ -61,7 +61,7 @@ while(~fixatedEyes || ~dur)
         %Screen('FrameRect',w, topColors, rectangle(:,1), 6);
         %Screen('FrameRect',w, bottomColors, rectangle(:,2), 6);
         Screen('DrawTextures', w, rect1, [], rectangle(:,1));
-        Screen('DrawTextures', w, rect1, [], rectangle(:,2));
+        Screen('DrawTextures', w, rect2, [], rectangle(:,2));
     end
 
     

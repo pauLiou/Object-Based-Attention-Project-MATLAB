@@ -44,8 +44,8 @@ while (~validInput)
 end
     if exp.practice == 'y'
         QUEST = false;
-        numberofblocks = 1;%3;
-        numberoftrials = 10;%64;
+        numberofblocks = 3;%3;
+        numberoftrials = 64;%64;
         eyetracker = false;% true;
     else
         if exp.quest == 'y'
@@ -55,10 +55,10 @@ end
             eyetracker = true;
             
         else
-            numberofblocks = 1;%8; % How many total blocks 8
-            numberoftrials = 10;%64; % How many total trials 64
+            numberofblocks = 8;%8; % How many total blocks 8
+            numberoftrials = 64;%64; % How many total trials 64
             QUEST = false;
-            eyetracker = false;%true;
+            eyetracker = true;
             
         end
     end
